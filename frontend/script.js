@@ -48,7 +48,7 @@ function stopApiMonitoring() {
     apiCheckTimer = null;
     console.log('Мониторинг API остановлен');
 }
-function intiApp() {
+function initApp() {
     console.log('Приложение инициализируется...');
     startApiMonitoring();
     setupEventListeners();
