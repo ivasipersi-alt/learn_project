@@ -5,7 +5,7 @@ class BackendApiClient:
         self.base_url = base_url
 
     def get_status(self):
-        response = httpx.get(f"{self.base_url}/api/items")
+        response = httpx.get(f"{self.base_url}/api/status")
         response.raise_for_status()
         return response.json()
     def get_items(self):
