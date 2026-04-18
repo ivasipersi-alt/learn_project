@@ -27,9 +27,7 @@ def init_db():
     total = cursor.execute("SELECT COUNT(*) as total FROM courses").fetchone()["total"]
     if total == 0:
         demo_courses = [
-            ("Backend на Python", "Изучение FastAPI, Flask и SQL", 15000.0, 4, "Анна Смирнова"),
-            ("Frontend Basics", "Основы HTML, CSS и JS", 10000.0, 2, "Иван Иванов"),
-            ("DevOps для новичков", "Git, Docker, CI/CD", 18500.0, 3, "Алексей Петров")
+            ("Bарка пельмешек", "Вода, соль, наслаждение", 150000.0, 1, "Мистер Пельмень")
         ]
         cursor.executemany(
             "INSERT INTO courses (title, description, price, duration_months, instructor) VALUES (?, ?, ?, ?, ?)",

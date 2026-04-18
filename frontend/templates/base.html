@@ -2,16 +2,16 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Онлайн-школа Mute</title>
+    <title>Онлайн-школа</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="navbar">
-        <h2>SchoolApp</h2>
+        <h2>ЧебупелькиSchool</h2>
         <div class="nav-links">
             <a href="/" class="btn btn-secondary">Главная</a>
             <a href="/cart" class="btn btn-primary">
-                🛒 Корзина
+                Корзина
                 <span class="cart-badge">{{ session.get('cart', []) | length }}</span>
             </a>
             <a href="http://127.0.0.1:8000/docs" target="_blank" class="btn btn-success">Swagger</a>
