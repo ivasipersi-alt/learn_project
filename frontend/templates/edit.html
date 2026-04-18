@@ -1,10 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+    <div class="flex-between" style="margin-bottom: 25px;">
+        <h2 style="margin: 0;">✏️ Редактирование курса</h2>
+        <a href="/" class="btn btn-secondary">Отмена</a>
+    </div>
+
+    <form action="/edit/{{ course.id }}" method="post">
+        <div class="form-group">
+            <label>Название учебной программы</label>
+            <input type="text" name="title" class="form-control" value="{{ course.title }}" required>
+        </div>
+
+        <div class="form-group">
+            <label>Подробное описание</label>
+            <textarea name="description" class="form-control" rows="3">{{ course.description }}</textarea>
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Стоимость (₽)</label>
+                <input type="number" step="0.01" name="price" class="form-control" value="{{ course.price }}" required>
+            </div>
+            <div class="form-group">
+                <label>Длительность (мес.)</label>
+                <input type="number" name="duration_months" class="form-control" value="{{ course.duration_months }}" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Преподаватель</label>
+            <input type="text" name="instructor" class="form-control" value="{{ course.instructor }}" required>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+            <button type="submit" class="btn btn-primary">💾 Обновить данные курса</button>
+        </div>
+    </form>
+{% endblock %}
