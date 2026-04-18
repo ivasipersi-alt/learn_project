@@ -23,7 +23,6 @@ def init_db():
     """)
     conn.commit()
 
-    # Заполнение демо-данными
     total = cursor.execute("SELECT COUNT(*) as total FROM courses").fetchone()["total"]
     if total == 0:
         demo_courses = [

@@ -3,8 +3,7 @@ import requests
 import os
 
 app = Flask(__name__)
-# Секретный ключ нужен для работы сессий (корзины) и flash-сообщений
-app.secret_key = "super-secret-school-key"
+app.secret_key = "popi"
 API_URL = "http://127.0.0.1:8000"
 
 
@@ -17,7 +16,6 @@ def index():
         flash(f"Ошибка подключения к API: {e}", "error")
         courses = []
 
-    # Считаем количество товаров в корзине для отображения в меню
     cart_count = len(session.get('cart', []))
     return render_template("index.html", courses=courses, cart_count=cart_count)
 
@@ -32,6 +30,7 @@ def create():
             "duration_months": int(request.form.get("duration_months")),
             "instructor": request.form.get("instructor")
         }
+
         if requests.post(f"{API_URL}/courses", json=data).status_code == 201:
             flash("Новый курс успешно добавлен!", "success")
             return redirect(url_for('index'))
@@ -52,7 +51,6 @@ def edit(id):
             flash("Курс обновлен!", "success")
             return redirect(url_for('index'))
 
-    # Получаем данные курса и передаем их в шаблон edit.html
     r = requests.get(f"{API_URL}/courses/{id}")
     if r.ok:
         return render_template("edit.html", course=r.json())
@@ -72,7 +70,6 @@ def delete(id):
     return redirect(url_for('index'))
 
 
-# --- ЛОГИКА КОРЗИНЫ ---
 
 @app.route("/cart")
 def view_cart():
@@ -80,7 +77,6 @@ def view_cart():
     cart_items = []
     total_sum = 0
 
-    # Запрашиваем информацию по каждому курсу в корзине
     for course_id in cart_ids:
         r = requests.get(f"{API_URL}/courses/{course_id}")
         if r.ok:
