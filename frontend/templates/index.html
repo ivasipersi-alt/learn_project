@@ -60,7 +60,7 @@
                         <a href="/edit/{{ c.id }}" class="btn" style="background-color: #ffc107; color: black; text-decoration: none; padding: 6px 12px; border-radius: 4px;">Изменить</a>
 
                         <form action="/delete/{{ c.id }}" method="post" style="margin: 0;">
-                            <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Удалить</button>
+                            <button type="submit" class="btn" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;" onclick="return confirm('вы действительно хотите удалить эту штучку?)')">Удалить</button>
                         </form>
                     </div>
                 </td>

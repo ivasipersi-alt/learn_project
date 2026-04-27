@@ -51,22 +51,5 @@
         </div>
     </form>
 
-    <script>
-        function togglePrice() {
-            const isFree = document.getElementById('is_free_checkbox').checked;
-            const priceGroup = document.getElementById('price_group');
-            const discountGroup = document.getElementById('discount_group');
-            const priceInput = document.getElementById('price_input');
-
-            if (isFree) {
-                priceGroup.style.display = 'none';
-                discountGroup.style.display = 'none';
-                priceInput.removeAttribute('required');
-            } else {
-                priceGroup.style.display = 'block';
-                discountGroup.style.display = 'block';
-                priceInput.setAttribute('required', 'required');
-            }
-        }
-    </script>
+    
 {% endblock %}
