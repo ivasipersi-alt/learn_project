@@ -18,16 +18,26 @@
             </thead>
             <tbody>
                 {% for item in cart_items %}
-                <tr>
-                    <td><strong>{{ item.title }}</strong><br><span class="text-muted">{{ item.instructor }}</span></td>
-                    <td>{{ item.duration_months }} мес.</td>
-                    <td class="price-tag">{{ item.price }} ₽</td>
-                    <td style="text-align: right;">
-                        <form action="/cart/remove/{{ item.id }}" method="post">
-                            <button type="submit" class="btn btn-danger">✕</button>
-                        </form>
-                    </td>
-                </tr>
+                 <tr>
+                <td><strong>{{ item.title }}</strong><br><span class="text-muted">{{ item.instructor }}</span></td>
+                <td>{{ item.duration_months }} мес.</td>
+                <td class="price-tag">
+                    {% if item.discount_percent > 0 %}
+                        <span style="text-decoration: line-through; color: #6c757d; font-size: 0.85em;">{{ item.price }} ₽</span><br>
+                        <span style="color: #dc3545; font-weight: bold;">{{ item.final_price }} ₽</span>
+                    {% elif item.final_price == 0 %}
+                        <span style="color: #198754; font-weight: bold;">Бесплатно</span>
+                    {% else %}
+                        <span>{{ item.price }} ₽</span>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;">
+                    <form action="/cart/remove/{{ item.id }}" method="post" style="margin: 0;">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+
                 {% endfor %}
             </tbody>
         </table>

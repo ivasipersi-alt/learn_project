@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
+from typing import Optional
 from backend import crud
 from backend.database import init_db
 from backend.schemas import CourseCreate, CourseUpdate, CoursePatch, CourseResponse
@@ -9,31 +10,36 @@ app = FastAPI(title="Online School API", version="1.0.0")
 def startup():
     init_db()
 
-@app.get("/courses", response_model=list[CourseResponse], tags=["Courses"])
-def read_courses(): return crud.get_all_courses()
+@app.get("/courses", response_model=list[CourseResponse])
+def read_courses(filter_type: Optional[str] = Query(None)):
+    return crud.get_all_courses(filter_type=filter_type)
 
-@app.get("/courses/{id}", response_model=CourseResponse, tags=["Courses"])
+@app.post("/courses", response_model=CourseResponse, status_code=201)
+def create_course(course: CourseCreate):
+    course_id = crud.create_course(course.model_dump())
+    return crud.get_course_by_id(course_id)
+
+@app.get("/courses/{id}", response_model=CourseResponse)
 def read_course(id: int):
-    c = crud.get_course_by_id(id)
-    if not c: raise HTTPException(status_code=404, detail="Курс не найден")
-    return c
+    res = crud.get_course_by_id(id)
+    if not res: raise HTTPException(status_code=404, detail="Курс не найден")
+    return res
 
-@app.post("/courses", response_model=CourseResponse, status_code=201, tags=["Courses"])
-def add_course(course: CourseCreate): return crud.create_course(course.model_dump())
-
-@app.put("/courses/{id}", response_model=CourseResponse, tags=["Courses"])
-def edit_course(id: int, course: CourseUpdate):
+@app.put("/courses/{id}", response_model=CourseResponse)
+def put_course(id: int, course: CourseUpdate):
     res = crud.update_course(id, course.model_dump())
     if not res: raise HTTPException(status_code=404, detail="Курс не найден")
     return res
 
-@app.patch("/courses/{id}", response_model=CourseResponse, tags=["Courses"])
+@app.patch("/courses/{id}", response_model=CourseResponse)
 def patch_course(id: int, course: CoursePatch):
     res = crud.patch_course(id, course.model_dump(exclude_none=True))
     if not res: raise HTTPException(status_code=404, detail="Курс не найден")
     return res
 
-@app.delete("/courses/{id}", tags=["Courses"])
+@app.delete("/courses/{id}")
 def delete_course(id: int):
-    if not crud.delete_course(id): raise HTTPException(status_code=404, detail="Курс не найден")
-    return {"message": "Успешно удалено"}
+    if not crud.get_course_by_id(id):
+        raise HTTPException(status_code=404, detail="Курс не найден")
+    crud.delete_course(id)
+    return {"detail": "Курс удален"}

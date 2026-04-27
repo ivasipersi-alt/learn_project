@@ -17,13 +17,25 @@
             <textarea name="description" class="form-control" rows="3"></textarea>
         </div>
 
-        <div class="form-grid">
-            <div class="form-group">
+        <div class="form-group" style="margin-bottom: 15px; padding: 10px; background-color: rgba(0,0,0,0.03); border-radius: 8px;">
+            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; margin: 0;">
+                <input type="checkbox" name="is_free" id="is_free_checkbox" onchange="togglePrice()" style="width: 20px; height: 20px;">
+                <strong style="color: var(--success);">Сделать курс бесплатным</strong>
+            </label>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div class="form-group" id="price_group">
                 <label>Стоимость (₽)</label>
-                <input type="number" step="0.01" name="price" class="form-control" required min="0">
+                <input type="number" step="0.01" name="price" id="price_input" class="form-control" required min="0">
             </div>
+            <div class="form-group" id="discount_group">
+                <label>Скидка (%)</label>
+                <input type="number" name="discount_percent" class="form-control"  min="0" max="100">
+            </div>
+
             <div class="form-group">
-                <label>Длительность (месяцев)</label>
+                <label>Срок (мес.)</label>
                 <input type="number" name="duration_months" class="form-control" required min="1">
             </div>
         </div>
@@ -38,4 +50,23 @@
             <a href="/" class="btn btn-cancel">Отмена</a>
         </div>
     </form>
+
+    <script>
+        function togglePrice() {
+            const isFree = document.getElementById('is_free_checkbox').checked;
+            const priceGroup = document.getElementById('price_group');
+            const discountGroup = document.getElementById('discount_group');
+            const priceInput = document.getElementById('price_input');
+
+            if (isFree) {
+                priceGroup.style.display = 'none';
+                discountGroup.style.display = 'none';
+                priceInput.removeAttribute('required');
+            } else {
+                priceGroup.style.display = 'block';
+                discountGroup.style.display = 'block';
+                priceInput.setAttribute('required', 'required');
+            }
+        }
+    </script>
 {% endblock %}
