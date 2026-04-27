@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="flex-between" style="margin-bottom: 20px;">
+        <h2 style="margin: 0;">Ваша корзина</h2>
+        <a href="/" class="btn btn-secondary">Продолжить выбор</a>
+    </div>
+
+    {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Курс</th>
+                    <th>Длительность</th>
+                    <th>Стоимость</th>
+                    <th style="text-align: right;">Удалить</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                 <tr>
+                <td><strong>{{ item.title }}</strong><br><span class="text-muted">{{ item.instructor }}</span></td>
+                <td>{{ item.duration_months }} мес.</td>
+                <td class="price-tag">
+                    {% if item.discount_percent > 0 %}
+                        <span style="text-decoration: line-through; color: #6c757d; font-size: 0.85em;">{{ item.price }} ₽</span><br>
+                        <span style="color: #dc3545; font-weight: bold;">{{ item.final_price }} ₽</span>
+                    {% elif item.final_price == 0 %}
+                        <span style="color: #198754; font-weight: bold;">Бесплатно</span>
+                    {% else %}
+                        <span>{{ item.price }} ₽</span>
+                    {% endif %}
+                </td>
+                <td style="text-align: right;">
+                    <form action="/cart/remove/{{ item.id }}" method="post" style="margin: 0;">
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="margin-top: 30px; padding: 25px; background-color: #f8fafc; border-radius: 8px; border: 1px solid var(--border-color); text-align: right;">
+            <p style="margin: 0 0 10px 0; color: var(--text-muted);">Итого к оплате:</p>
+            <h2 style="margin: 0 0 20px 0; color: var(--text-main); font-size: 2.5rem;">{{ total_sum }} ₽</h2>
+            <button class="btn btn-primary" style="font-size: 1.1rem; padding: 12px 30px;">Перейти к оформлению</button>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 50px 0;">
+            <h3 style="color: var(--text-muted);">Корзина пуста</h3>
+            <p>Вы пока не добавили ни одного курса.</p>
+            <a href="/" class="btn btn-primary" style="margin-top: 15px;">Вернуться к списку</a>
+        </div>
+    {% endif %}
+{% endblock %}
